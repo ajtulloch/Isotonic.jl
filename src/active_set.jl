@@ -19,12 +19,7 @@ end
 
 function active_set_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
     @inbounds begin
-        active_set = Array(ActiveState, size(y, 1))
-
-        for i in 1 : size(active_set, 1)
-            active_set[i] = ActiveState(weights[i] * y[i], weights[i], i, i)
-        end
-
+        active_set = [ActiveState(weights[i] * y[i], weights[i], i, i) for i in 1 : size(y, 1)]
         current = 1
         while current < size(active_set, 1)
             while current < size(active_set, 1) && below(active_set[current], active_set[current+1])
@@ -50,4 +45,4 @@ function active_set_isotonic_regression(y::Vector{Float64}, weights::Vector{Floa
     return y
 end
 
-active_set_isotonic_regression(y::Vector{Float64}) = active_isotonic_regression(y, ones(size(y, 1)))
+active_set_isotonic_regression(y::Vector{Float64}) = active_set_isotonic_regression(y, ones(size(y, 1)))
