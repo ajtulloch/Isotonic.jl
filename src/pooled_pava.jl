@@ -1,8 +1,8 @@
 function pooled_pava_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
     j = 1
-    S = [0 => 0, 1 => 1]
-    ydash = [1 => y[1]]
-    wdash = [1 => weights[1]]
+    S = Dict(0 => 0, 1 => 1)
+    ydash = Dict(1 => y[1])
+    wdash = Dict(1 => weights[1])
     @inbounds begin
         for i in 2 : size(y, 1)
             j = j + 1
