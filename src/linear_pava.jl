@@ -1,9 +1,14 @@
 function isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
+
+    n = length(y)
+    if n <= 1
+        return y
+    end
+    if n != length(weights)
+        throw(DimensionMismatch("Lengths of values and weights mismatch"))
+    end
+
     @inbounds begin
-        n = size(y, 1)
-        if n <= 1
-            return y
-        end
         n -= 1
         while true
             i = 1

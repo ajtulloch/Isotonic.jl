@@ -1,10 +1,19 @@
 function pooled_pava_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
+
+    n = length(y)
+    if n <= 1
+        return y
+    end
+    if n != length(weights)
+        throw(DimensionMismatch("Lengths of values and weights mismatch"))
+    end
+
     j = 1
-    S = [0 => 0, 1 => 1]
-    ydash = [1 => y[1]]
-    wdash = [1 => weights[1]]
+    S = Dict(0 => 0, 1 => 1)
+    ydash = Dict(1 => y[1])
+    wdash = Dict(1 => weights[1])
     @inbounds begin
-        for i in 2 : size(y, 1)
+        for i in 2 : n
             j = j + 1
             ydash[j] = y[i]
             wdash[j] = weights[i]

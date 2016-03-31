@@ -18,8 +18,17 @@ function below(l::ActiveState, r::ActiveState)
 end
 
 function active_set_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
+
+    n = length(y)
+    if n <= 1
+        return y
+    end
+    if n != length(weights)
+        throw(DimensionMismatch("Lengths of values and weights mismatch"))
+    end
+
     @inbounds begin
-        active_set = [ActiveState(weights[i] * y[i], weights[i], i, i) for i in 1 : size(y, 1)]
+        active_set = [ActiveState(weights[i] * y[i], weights[i], i, i) for i in 1 : n]
         current = 1
         while current < size(active_set, 1)
             while current < size(active_set, 1) && below(active_set[current], active_set[current+1])
