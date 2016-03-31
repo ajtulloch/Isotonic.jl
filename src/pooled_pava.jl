@@ -1,4 +1,4 @@
-function pooled_pava_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
+function pooled_pava_isotonic_regression!(y::Vector{Float64}, weights::Vector{Float64})
 
     n = length(y)
     if n <= 1
@@ -34,4 +34,8 @@ function pooled_pava_isotonic_regression(y::Vector{Float64}, weights::Vector{Flo
     return y
 end
 
-pooled_pava_isotonic_regression(y::Vector{Float64}) = pooled_pava_isotonic_regression(y, ones(size(y, 1)))
+pooled_pava_isotonic_regression!(y::Vector{Float64}) = pooled_pava_isotonic_regression!(y, ones(size(y, 1)))
+
+# non-mutating versions
+pooled_pava_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64}) = pooled_pava_isotonic_regression!(copy(y), weights)
+pooled_pava_isotonic_regression(y::Vector{Float64}) = pooled_pava_isotonic_regression(y, ones(size(y,1)))

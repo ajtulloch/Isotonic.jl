@@ -1,4 +1,4 @@
-function isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
+function isotonic_regression!(y::Vector{Float64}, weights::Vector{Float64})
 
     n = length(y)
     if n <= 1
@@ -44,4 +44,8 @@ function isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
     return y
 end
 
-isotonic_regression(y::Vector{Float64}) = isotonic_regression(y, ones(size(y, 1)))
+isotonic_regression!(y::Vector{Float64}) = isotonic_regression!(y, ones(size(y, 1)))
+
+# non-mutating versions
+isotonic_regression(y::Vector{Float64}, weights::Vector{Float64}) = isotonic_regression!(copy(y), weights)
+isotonic_regression(y::Vector{Float64}) = isotonic_regression(y, ones(size(y,1)))

@@ -17,7 +17,7 @@ function below(l::ActiveState, r::ActiveState)
     return l.weighted_label * r.weight <= l.weight * r.weighted_label
 end
 
-function active_set_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64})
+function active_set_isotonic_regression!(y::Vector{Float64}, weights::Vector{Float64})
 
     n = length(y)
     if n <= 1
@@ -54,4 +54,8 @@ function active_set_isotonic_regression(y::Vector{Float64}, weights::Vector{Floa
     return y
 end
 
-active_set_isotonic_regression(y::Vector{Float64}) = active_set_isotonic_regression(y, ones(size(y, 1)))
+active_set_isotonic_regression!(y::Vector{Float64}) = active_set_isotonic_regression!(y, ones(size(y, 1)))
+
+# non-mutating versions
+active_set_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64}) = active_set_isotonic_regression!(copy(y), weights)
+active_set_isotonic_regression(y::Vector{Float64}) = active_set_isotonic_regression(y, ones(size(y,1)))
