@@ -1,4 +1,4 @@
-immutable ActiveState
+struct ActiveState
     weighted_label::Float64
     weight::Float64
     lower::Int64
@@ -48,14 +48,14 @@ function active_set_isotonic_regression!(y::Vector{Float64}, weights::Vector{Flo
         end
 
         for as in active_set
-            y[as.lower:as.upper] = as.weighted_label / as.weight
+            y[as.lower:as.upper] .= as.weighted_label / as.weight
         end
     end
     return y
 end
 
-active_set_isotonic_regression!(y::Vector{Float64}) = active_set_isotonic_regression!(y, ones(size(y, 1)))
+active_set_isotonic_regression!(y::Vector{Float64}) = active_set_isotonic_regression!(y, fill!(similar(y), one(eltype(y))))
 
 # non-mutating versions
 active_set_isotonic_regression(y::Vector{Float64}, weights::Vector{Float64}) = active_set_isotonic_regression!(copy(y), weights)
-active_set_isotonic_regression(y::Vector{Float64}) = active_set_isotonic_regression(y, ones(size(y,1)))
+active_set_isotonic_regression(y::Vector{Float64}) = active_set_isotonic_regression(y, fill!(similar(y), one(eltype(y))))
