@@ -1,4 +1,4 @@
-module Isotonic2
+module Isotonic
 
 export isotonic_regression,
        isotonic_regression!,
